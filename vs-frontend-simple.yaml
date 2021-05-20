@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-frontend-simple
+  namespace: default
+spec:
+  gateways:
+  - frontend-gateway
+  hosts:
+  - 'ze.cloud'
+  http:
+  - retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: 5xx
+    route:
+    - destination:
+        host: frontend

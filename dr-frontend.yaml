@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: frontend
+spec:
+  host: frontend
+#  trafficPolicy:
+#    loadBalancer:
+#      simple: ROUND_ROBIN 
+  subsets:
+  - name: version-v1
+    labels:
+      version: v1
+  - name: version-v2
+    labels:
+      version: v2

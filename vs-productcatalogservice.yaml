@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-frontend
+spec:
+  gateways:
+  - frontend-gateway
+  hosts:
+  - productcatalogservice.default.io
+  http:
+  - route:
+    - destination:
+        host: frontend
+        subset: version-v2
+      weight: 50    
+  - route:
+    - destination:
+        host: frontend
+        subset: version-v1
+      weight: 50    
+    retries:
+      attempts: 3
+      retryOn: 5xx
+      perTryTimeout: 2s
