@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-productcatalogservice
+spec:
+  hosts:
+  #- productcatalogservice.default.svc.cluster.local
+  - productcatalogservice
+  gateways:
+   # - frontend-gateway
+  http:
+  - route:
+    - destination:
+        host: productcatalogservice
+        subset: v1
+      weight: 100
+    mirror:
+      host: productcatalogservice
+      subset: v2
+    mirrorPercentage:
+      value: 100.0
