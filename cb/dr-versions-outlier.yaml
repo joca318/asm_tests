@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: productcatalogservice
+  namespace: default
+spec:
+  host: productcatalogservice
+  subsets:
+  - labels:
+      version: v1
+    name: v1
+  - labels:
+      version: v2
+    name: v2
+    trafficPolicy:
+      connectionPool:
+        http:
+          http1MaxPendingRequests: 1
+          maxRequestsPerConnection: 1
+        tcp:
+          maxConnections: 100
+          connectTimeout: 650ms
+          tcpKeepalive:
+            time: 7200s
+            interval: 75s
+      outlierDetection:
+        baseEjectionTime: 3m
+        consecutive5xxErrors: 1
+        interval: 1s
+        maxEjectionPercent: 100
